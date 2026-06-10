@@ -12,16 +12,17 @@ It's a multi-format package on purpose: skim the site in 30 seconds, or go as de
 
 ## Start here: the interactive site
 
-**Open [`site/index.html`](site/index.html) in a browser.** It's the 30-second front door:
-the verdict, a scorecard, the live-test results, the insights, an architecture teardown, and
-an interactive before/after redesign of the WhatsApp ordering flow (toggle "Current" vs
-"Redesigned"). It's styled to match chataigne.ai.
+**Live at [chataigne.vercel.app](https://chataigne.vercel.app)** (or open
+[`site/index.html`](site/index.html) locally). It's the 30-second front door: the verdict, a
+scorecard, the live-test results, the insights, an architecture teardown, and an interactive
+before/after redesign of the WhatsApp ordering flow (toggle "Current" vs "Redesigned"). It's
+styled to match chataigne.ai.
 
 ## The four artifacts
 
 | Artifact | What it is | Open |
 |---|---|---|
-| **Interactive site** | The main thing. Teardown, scorecard, live findings, and the redesign mockup. | [`site/index.html`](site/index.html) |
+| **Interactive site** | The main thing. Teardown, scorecard, live findings, and the redesign mockup. | [chataigne.vercel.app](https://chataigne.vercel.app) · [`site/index.html`](site/index.html) |
 | **LaTeX report** | The written write-up: insights, taxonomy, live results, architecture, strategy. | [`report/chataigne-teardown.pdf`](report/chataigne-teardown.pdf) ([`.tex`](report/chataigne-teardown.tex)) |
 | **Eval harness** | Runnable: agent reconstruction, 19 scored scenarios, LLM-as-judge, CI gate. | [`eval-harness/`](eval-harness/) |
 | **Live red-team** | The probes I ran against the live demo bot, with the full write-up. | [`redteam/findings.md`](redteam/findings.md) |
