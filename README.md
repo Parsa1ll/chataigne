@@ -28,22 +28,23 @@ an interactive before/after redesign of the WhatsApp ordering flow (toggle "Curr
 
 ## The thesis, in a paragraph
 
-Right wedge, right architecture, right market. Putting ordering in the messaging app people
-already use, instead of another download, is a sharp bet, and grounding an LLM in live menu
-data instead of fine-tuning is the right call. The risk isn't the idea; it's the reliability
-and onboarding layers under the chat. Item existence, prices, and business rules belong in
-code, not the model. The POS write path is the real moat and the real risk. Per-order pricing
-(not commission) makes order frequency and loyalty the revenue lever, which collides with
-WhatsApp's 24-hour messaging window. You de-risk all of it with disciplined evals and a clean
-channel boundary. That's the work, and it's why I built the harness.
+I think the core bet is right. Putting ordering inside the app people already have open,
+instead of asking them to download another one, is a smart wedge, and grounding an LLM in live
+menu data beats fine-tuning. What I'd worry about isn't the idea, it's the reliability and
+onboarding layers under the chat. Item existence, prices, and business rules belong in code,
+never the model. The POS write path is where the real moat and the real risk both sit. And
+because Châtaigne charges per order rather than a commission, order frequency and loyalty are
+the revenue lever, which runs straight into WhatsApp's 24-hour messaging window. You de-risk
+all of it with disciplined evals and a clean channel boundary. That's the work, and it's why I
+built the harness.
 
 ## Live test, in one line
 
 I tried to break the things that actually hurt a restaurant: hallucinated items, prompt
 injection in a payment loop, social engineering, and allergen liability all held. The things
-to fix are an order summary whose lines don't visibly add up to the total, a pickup/delivery
-time stuck on the restaurant's Paris timezone, an order summary that comes back in French even
-when you chat in English, and no way to cancel or change an order in chat once it's confirmed.
+to fix are a summary whose lines don't visibly add up to the total, a pickup/delivery time
+stuck on the restaurant's Paris timezone, replies that stay in French after you switch back to
+English mid-conversation, and no way to cancel or change an order in chat once it's confirmed.
 Full detail in [`redteam/findings.md`](redteam/findings.md).
 
 ## Repo map

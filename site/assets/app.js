@@ -159,8 +159,10 @@
       { type: "bot", text: "Delivery by 07:33. Confirm or modify below." },
     ],
     [
-      { type: "me", text: "let's make an order, 1 Crispy Tasty" },
-      { type: "bot", text: "Got your order, 1x Crispy Tasty. Delivery in about 19 min once you confirm." },
+      { type: "me", text: "bonjour, je voudrais commander" },
+      { type: "bot", text: "Bien sûr ! Que puis-je vous servir ?" },
+      { type: "me", text: "actually let's switch to english, 1 Crispy Tasty" },
+      { type: "bot", text: "Très bien, 1x Crispy Tasty. Livraison dans environ 19 min après confirmation." },
       {
         type: "osum",
         title: "Résumé de commande",
@@ -169,7 +171,7 @@
           ["Frais de livraison", "2.95€"],
         ],
         total: "12.85€",
-        note: "I spoke English the whole time, but the summary and confirmation come back in French.",
+        note: "I switched to French earlier, then back to English. Everything after stayed French, the reply, the summary, the lot.",
       },
     ],
   ];

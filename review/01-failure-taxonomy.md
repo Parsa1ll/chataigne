@@ -33,10 +33,10 @@ then gate against.
 4. **F3 / F6 / F7 / F8**, accuracy/UX correctness; high volume, addressed well by a
    golden-set regression gate.
 
-## The throughline
+## The rule underneath all of it
 
-F1, F2, and F8 should essentially never reach the model's discretion: **item existence,
-prices, totals, and business rules belong in code**, with the LLM doing language, not
+F1, F2, and F8 should essentially never come down to the model's judgment: **item existence,
+prices, totals, and business rules belong in code**, with the LLM handling language, not
 arithmetic or policy. That's the design the [reconstruction](../eval-harness/agent.py)
 demonstrates (cart + totals are code-owned; the model is instructed to quote tool numbers
 verbatim), and it's the first architectural thing I'd verify is true in production.

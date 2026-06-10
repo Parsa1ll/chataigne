@@ -72,8 +72,9 @@ step. That's where the engineering, and the defensibility, actually is.
 
 ## Bottom line
 
-Right market, right wedge, right architectural instincts. The risks are all in the
-*reliability and onboarding* layers, not the idea. Those risks are also exactly the kind
-that disciplined evals and good abstractions de-risk, which is the work I'd want to do.
+The market, the wedge, and the architectural instincts are all right. What I'd worry about
+sits in the *reliability and onboarding* layers, not the idea itself, and those are exactly
+the kind of risks that disciplined evals and good abstractions take care of, which is the work
+I'd want to do.
 The taxonomy of how it breaks is in [`01-failure-taxonomy.md`](01-failure-taxonomy.md);
 where I'd invest is in [`02-strategy-memo.md`](02-strategy-memo.md).

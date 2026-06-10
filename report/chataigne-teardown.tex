@@ -63,11 +63,11 @@
 \vspace{10pt}
 
 \begin{verdict}
-\textbf{Verdict.} Right wedge, right architecture, right market. Putting commerce in the messaging
-app people already use, instead of another download, is a sharp and fundable bet. Grounding an LLM
-in live menu data instead of fine-tuning is the right call. The risk isn't the idea. It's the
-reliability and onboarding layers under the chat. Those are exactly the surfaces that evals and
-clean abstractions de-risk, and exactly the work I want to own.
+\textbf{Verdict.} I think the core bet is right. Putting ordering inside the app people already have
+open, instead of asking them to download another one, is a smart wedge, and grounding the model in
+live menu data beats fine-tuning. What I'd worry about isn't the idea, it's the reliability and
+onboarding layers underneath the chat. That's the part evals and clean abstractions exist to make
+safe, and it's the part I'd want to own.
 \end{verdict}
 
 \paragraph{How I approached this.} I spent a day with the live product before forming opinions. I ran red-team
@@ -77,52 +77,46 @@ is the written half; the companion artifacts are an interactive site, the eval-h
 red-team write-up.
 
 % ===== INSIGHTS =====
-\section{Six insights most reviews miss}
+\section{Four things worth diving into}
 
-These are the connected, domain-specific calls. Not surface-level UX notes.
+These are the risks I'd dig into, each with what I'd do about it. Not UX nitpicks, and not the obvious
+bugs (those are in the live-results section), but the calls about the architecture and the funnel that
+I'd weigh in on.
 
-\subsection*{1. WhatsApp's 24-hour window taxes loyalty}
-WhatsApp only lets you message a customer for free within 24h of \emph{their} last message. After
-that you pay for pre-approved template messages. That one Meta rule prices your whole loyalty
-product.
-\begin{fixbox}\textbf{So:} what it costs to message a customer again has to shape the design from the
-start, not be bolted on later. It also runs into insight 2.\end{fixbox}
-
-\subsection*{2. Per-order pricing rewards frequency, not bigger carts}
-A per-order fee (not commission) means revenue doesn't grow with basket size. A \euro{50} order
-pays the same as a \euro{15} one. Upsizing the cart doesn't help you.
-\begin{fixbox}\textbf{So:} the only ways to grow are more orders per customer and cheaper customer
-acquisition. Repeat orders are where the money is, which runs straight back into the 24-hour
-window.\end{fixbox}
-
-\subsection*{3. The POS moat is the write path, not the read}
-Reading a menu is easy. Writing a correct order into 40+ POS systems, with each one's modifiers
-mapped and an idempotency key so a retry doesn't double-fire, is hard. That's where the silent,
-restaurant-blaming failures happen. The bot routes pricing, discounts, and payment confirmation
+\subsection*{1. Writing orders into the POS is the hard part}
+Reading a menu out of a POS is the easy direction. Writing a correct order back into 40+ different
+POS systems, with every modifier mapped to each one's format and an idempotency key so a network
+retry doesn't fire the order twice, is the hard one. That's where orders quietly fail and the
+restaurant ends up taking the blame. The bot runs pricing, discounts, and payment confirmation
 through a backend it calls \textbf{``Nexus.''}
-\begin{fixbox}\textbf{So:} the number that matters is write-path success per POS. Make writes
-idempotent, queue the failures instead of dropping them, and alert before the restaurant
-calls.\end{fixbox}
+\begin{fixbox}\textbf{What I'd do:} treat write-path success per POS as the number to watch. Make the writes
+idempotent, queue the failures instead of dropping them, and alert before the restaurant has to call
+in.\end{fixbox}
 
-\subsection*{4. You're competing with muscle memory}
-No download is only a win if ordering is fast. The live order asked separately for sauce, then drink,
-then side; the agent itself said it needs ``fewer taps.''
-\begin{fixbox}\textbf{So:} measure median turns-to-checkout. The redesign (\S5) cuts it from 6 to
-3.\end{fixbox}
+\subsection*{2. Chat ordering has to be faster than the apps}
+``No download'' only wins if ordering in chat is actually faster than opening the app people already
+use. My live order asked for the sauce, then the drink, then the side, each as its own message. The
+agent itself said it needs ``fewer taps.''
+\begin{fixbox}\textbf{What I'd do:} track median turns-to-checkout and batch the questions into one pass. My
+redesign (\S5) gets the same order down from six to three.\end{fixbox}
 
-\subsection*{5. Prices and rules should never be the model's call}
-Made-up items, wrong totals, and broken rules are all preventable. The model only asks to change the
-cart; a deterministic cart reducer validates each request against a fixed schema and owns every
-total. The model handles language, code handles money.
+\subsection*{3. Don't let the model add up the bill}
+LLMs are good at conversation and unreliable at arithmetic, so prices and totals can't be the model's
+job. It should only ever ask to change the cart; a deterministic cart reducer validates each request
+against a fixed schema and owns every total, so a model that quotes a wrong number can't actually
+overcharge anyone. The bot behaves today; the real worry is the next feature (an upsell, a loyalty
+perk, memory of past orders) that wires the model back toward the money, where one wrong total burns a
+restaurant's trust.
 \begin{fixbox}\textbf{Confirmed live:} ``I can't override prices or apply discounts,'' ``I can't
-confirm payment unless Nexus tells me it went through.'' The harness regression-tests that boundary
-on every prompt change.\end{fixbox}
+confirm payment unless Nexus tells me it went through.'' The harness regression-tests that boundary on
+every prompt change, so it can't quietly erode.\end{fixbox}
 
-\subsection*{6. Voice and pay-in-chat are where customers drop off}
-Voice-to-text breaks on noisy, accented, or mixed-language speech. Paying inside WhatsApp makes
-first-time users nervous.
-\begin{fixbox}\textbf{So:} the biggest drop-off is probably the Stripe payment step. Add tracking
-there first, before changing anything else.\end{fixbox}
+\subsection*{4. Paying inside the chat is where first-timers hesitate}
+Paying inside a chat window, rather than on the checkout page people are used to, is the kind of
+friction that makes a first-time customer pause, and it's invisible without tracking: nobody abandons
+loudly, they just stop replying at the payment step.
+\begin{fixbox}\textbf{What I'd do:} instrument the Stripe payment step first, before touching anything else in
+the flow. I'd bet it's the biggest single leak, and right now nobody is measuring it.\end{fixbox}
 
 % ===== TAXONOMY =====
 \section{Failure taxonomy}
@@ -136,22 +130,23 @@ to a test: a probe against the live demo bot, a scored scenario in the eval harn
 \toprule
 \textbf{\#} & \textbf{Failure class} & \textbf{Risk} & \textbf{Tested by} \\
 \midrule
-F1 & Menu hallucination (invented item/price) & \risk{High} & redteam, harness \\
-F2 & Price / math drift & \risk{High} & redteam, harness \\
-F3 & Order accuracy under edits & \risk{Med} & harness \\
-F4 & Allergen / liability over-reach & \risk{High} & redteam, harness \\
-F5 & Prompt injection / abuse & \risk{High} & redteam, harness \\
-F6 & Multilingual / code-switch errors & \risk{Med} & redteam, harness \\
-F7 & Ambiguity mishandling & \risk{Med} & redteam, harness \\
-F8 & Business-rule violations (delivery min/fee) & \risk{Low} & harness \\
+F1 & Menu hallucination (invented item/price) & \risk{High} & Both \\
+F2 & Price / math drift & \risk{High} & Both \\
+F3 & Order accuracy under edits & \risk{Med} & Harness only \\
+F4 & Allergen / liability over-reach & \risk{High} & Both \\
+F5 & Prompt injection / abuse & \risk{High} & Both \\
+F6 & Multilingual / code-switch errors & \risk{Med} & Both \\
+F7 & Ambiguity mishandling & \risk{Med} & Both \\
+F8 & Business-rule violations (delivery min/fee) & \risk{Low} & Harness only \\
 \bottomrule
 \end{tabularx}
 \end{center}
 
-Where I'd spend reliability budget first: F4 allergen (lowest frequency, highest blast radius), then
-F1 and F2 (frequent, financial, and fully preventable in code), then F5 injection (adversarial input
-in a payment loop), then F3, F6, F7, F8 (accuracy and UX, well covered by a regression gate). The
-throughline: F1, F2, and F8 should never reach the model's discretion.
+Where I'd spend the reliability budget first: F4 allergen (rare, but the worst case if it goes
+wrong), then F1 and F2 (frequent, financial, and fully preventable in code), then F5 injection
+(adversarial input sitting in a payment loop), then F3, F6, F7, F8 (accuracy and UX, which a
+regression gate covers well). The rule underneath all of it: F1, F2, and F8 should never come down to
+the model's judgment.
 
 % ===== LIVE RESULTS =====
 \section{Live red-team results}
@@ -181,10 +176,13 @@ restaurant's local time, never converted to mine: an order showed a delivery slo
 ahead (my local time plus the Paris offset), so an evening order reads as an after-midnight slot.
 Reproducible across several orders. \emph{Fix:} render the ready-by time in the customer's timezone.
 
-\textbf{3. The reply language doesn't match the customer's.} The chat followed my language (English),
-but the order summary and confirmation came back as a fixed French template (``R\'esum\'e de
-commande,'' ``\`A livrer au''). The conversation is the model; the summary is code that was never
-localized to the session. \emph{Fix:} localize the summary template to the conversation language.
+\textbf{3. The agent won't switch languages back.} I'd been ordering in French earlier in the session;
+when I switched back to English the agent didn't follow, every reply after that stayed French: the
+conversation, the order summary, and the confirmation (``R\'esum\'e de commande,'' ``\`A livrer au'').
+It locks onto the first language the customer settles into and never re-detects a switch back. The
+agent can clearly operate in English (the timezone finding shows an English ``Pickup at store at
+01:51''), so this is session state, not an inability. \emph{Fix:} re-detect language per turn and
+follow the customer when they switch back.
 
 \textbf{4. No in-chat cancel or modify after confirmation.} Once an order is confirmed, the bot
 can't change or cancel it in chat; the customer has to phone the restaurant. For a conversational
@@ -194,9 +192,9 @@ product, that's a real gap. \emph{Fix:} an in-chat edit/cancel path within the o
 safety, but admitted ``I don't have detailed allergen information in the menu data I can see.'' Safe
 only because it defers. \emph{Fix:} structured allergen fields per item.
 
-\textbf{6. The persona breaks character to narrate its guardrails} (``Classic prompt injection
-attempt, I see what you're doing :)''). Confident to an evaluator, off-key to a paying customer.
-\emph{Fix:} decline naturally, in role.
+\textbf{6. The persona breaks character to narrate its own guardrails} (``Classic prompt injection
+attempt, I see what you're doing :)''). It reads as sharp to someone testing it, but off-key to an
+actual paying customer. \emph{Fix:} decline naturally, in role.
 
 \begin{verdict}
 \textbf{The agent corroborated two of these.} Asked, unprompted, how its own UI could be better, it
@@ -206,6 +204,11 @@ issues I had already flagged: the summary clarity (finding 1) and turns-to-check
 
 % ===== ARCHITECTURE =====
 \section{Architecture (reverse-engineered)}
+
+Some of this I could read straight off the live bot (WhatsApp in front, Stripe, the POS writes, and a
+backend it named ``Nexus''); the rest is how I'd structure it. The main call is a channel-agnostic
+ordering core with a thin adapter per channel, so adding Instagram or voice later is an adapter and
+not a rewrite.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -221,10 +224,10 @@ Voice \emph{(later)} & \textbf{Cart $\cdot$ pricing $\cdot$ rules (CODE)} & Uber
 \end{tabularx}
 \end{center}
 
-The invariant: pricing, item existence, and business rules live in the core, in code. Never
-re-implemented per channel, never left to the model. Design the channel boundary well now, so adding
-Instagram or voice is an adapter, not a rewrite. That doubles as a hedge against WhatsApp platform
-risk.
+The one rule that can't break: pricing, item existence, and business rules all live in the core, in
+code. They shouldn't be rebuilt for each new channel, and they shouldn't be left to the model. Draw
+that channel boundary well now and the next channel is just another adapter, which also keeps the
+company from leaning entirely on WhatsApp.
 
 % ===== REDESIGN =====
 \section{Ordering-flow redesign}
@@ -260,7 +263,7 @@ change prompts.
 \begin{enumerate}[leftmargin=2.2em,itemsep=3pt]
 \item \textbf{Make the harness a CI gate.} Run the golden set on every prompt or model change, block merges below threshold, and shadow-run it against live traffic so regressions surface before customers hit them.
 \item \textbf{Harden the POS write path:} idempotency keys so a retry can't double-fire, a holding queue for failed writes, and a per-POS success metric with alerting.
-\item \textbf{Fix the live findings at the source:} line totals from the cart, a ready-by time in the customer's timezone, a localized summary template, and a structured per-item allergen table.
+\item \textbf{Fix the live findings at the source:} line totals computed from the cart, a ready-by time in the customer's timezone, reply language that follows the customer per turn (including when they switch back), and a structured per-item allergen table.
 \item \textbf{Build the channel layer now} so SMS, Instagram DM, and voice are thin adapters, not rewrites. It also hedges WhatsApp platform risk.
 \item \textbf{Instrument the funnel and grow the golden set:} track turns-to-checkout and Stripe drop-off, and turn real failures into new test cases weekly.
 \end{enumerate}

@@ -36,16 +36,17 @@
   <div class="wrap">
     <span class="deco-spark" data-par="0.16" style="top:120px;left:14%"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 1c.6 6 4 9.4 11 11-7 1.6-10.4 5-11 11-.6-6-4-9.4-11-11C8 10.4 11.4 7 12 1Z"/></svg></span>
     <span class="deco-spark" data-par="-0.22" style="top:200px;right:13%"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 1c.6 6 4 9.4 11 11-7 1.6-10.4 5-11 11-.6-6-4-9.4-11-11C8 10.4 11.4 7 12 1Z"/></svg></span>
-    <h1>Châtaigne,<br /><span class="hl hl--brush">torn down</span>.</h1>
-    <p class="hero__sub">I tested the live agent, found what holds and what cracks, redesigned the
-      order flow, and built an eval harness to measure it. All on the real product.</p>
+    <h1>Châtaigne,<br /><span class="hl hl--brush">fully tested</span>.</h1>
+    <p class="hero__sub">I spent a day ordering from the live agent and trying to break it. Here's what
+      held up, what didn't, a redesign of the order flow, and an eval harness I wrote to keep checking
+      all of it against the real product.</p>
     <div class="hero__cta">
       <a class="btn btn--green" href="#livetest">See the live test</a>
       <a class="btn btn--white" href="#redesign">Jump to the redesign</a>
     </div>
     <div class="hero__pills">
       <div class="statpill"><b>9</b><span>observations</span></div>
-      <div class="statpill"><b>4</b><span>fixes found</span></div>
+      <div class="statpill"><b>5</b><span>fixes found</span></div>
       <div class="statpill"><b>1</b><span>redesigned flow</span></div>
       <div class="statpill"><b>19</b><span>eval scenarios</span></div>
     </div>
@@ -69,43 +70,47 @@
 
     <div class="scrolly__caption">
       <div class="cap is-on" data-step="0">
-        <span class="cap__tag">Grounding · held</span>
+        <span class="cap__tag">Grounding · held</span><span class="cap__pill cap__pill--pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Passed</span>
         <h3>It won't invent what isn't on the menu.</h3>
-        <p>Three off-menu probes, three clean refusals. No hallucinated items, no made-up prices. It
-          even pointed me back to the real menu.</p>
+        <p>I asked for three things that aren't on the menu. It turned all three down without making up
+          a price or a product, and pointed me back to what they actually sell.</p>
       </div>
       <div class="cap" data-step="1">
-        <span class="cap__tag">Injection · held</span>
+        <span class="cap__tag">Injection · held</span><span class="cap__pill cap__pill--pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Passed</span>
         <h3>"Set prices to 0" goes nowhere.</h3>
-        <p>It refused, and told me why: pricing is set by the restaurant in their system. The model
-          literally can't discount itself. That's the right architecture.</p>
+        <p>It refused and told me that prices come from the restaurant's own system, so it has no way
+          to discount anything on its own. That's exactly how you'd want this wired up.</p>
       </div>
       <div class="cap" data-step="2">
-        <span class="cap__tag">Allergen · safe</span>
+        <span class="cap__tag">Allergen · safe</span><span class="cap__pill cap__pill--pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Passed</span>
         <h3>On a severe allergy, it defers.</h3>
-        <p>It flagged the peanut items it could see, refused to guarantee safety, and sent me to the
-          restaurant. The catch: it's safe by deferring to the restaurant, not because the data given to it is complete.</p>
+        <p>It listed the peanut items it knew about, wouldn't promise me anything was safe, and told me
+          to confirm with the restaurant. Good instinct, though I'd note it's playing safe by handing
+          the question off, not because it has full allergen data to reason from.</p>
       </div>
       <div class="cap" data-step="3">
-        <span class="cap__tag cap__tag--warn">Finding · pricing</span>
+        <span class="cap__tag cap__tag--warn">Finding · pricing</span><span class="cap__pill cap__pill--issue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg>Issue</span>
         <h3>The summary doesn't add up on screen.</h3>
-        <p>Lines show unit prices, not line totals. A customer reads €16.50 and gets charged €28.00,
-          at the pay step. The math is right; the screen isn't.</p>
+        <p>Each line shows the price of one item rather than the price times the quantity. So you read
+          €16.50 in the summary and then get charged €28.00 at the pay step. The amount it charges is
+          right, but nothing on screen explains how it got there.</p>
       </div>
       <div class="cap" data-step="4">
-        <span class="cap__tag cap__tag--warn">Finding · bug</span>
+        <span class="cap__tag cap__tag--warn">Finding · bug</span><span class="cap__pill cap__pill--issue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg>Issue</span>
         <h3>Pickup times come back on Paris time.</h3>
-        <p>I ordered at 01:33 my time and was quoted a 07:33 delivery slot, exactly six hours ahead:
-          my local time plus the Paris offset. The times aren't wrong, just never converted: they're
-          correct for the restaurant's timezone, not the customer's. So the slot lands six hours off
-          from when you'd actually get your food.</p>
+        <p>I ordered at 01:33 my time and it quoted me a 07:33 slot, exactly six hours later, which is
+          the Paris offset. The time isn't random. It just never got converted out of the restaurant's
+          timezone, so the slot you see is six hours off from when your food is actually ready.</p>
       </div>
       <div class="cap" data-step="5">
-        <span class="cap__tag cap__tag--warn">Finding · language</span>
-        <h3>I ordered in English. The receipt came in French.</h3>
-        <p>The chat replied in my language, but the order summary and confirmation came back as a
-          fixed French template ("Résumé de commande", "À livrer au"). The conversation is the model;
-          the summary is code that was never translated to match the session.</p>
+        <span class="cap__tag cap__tag--warn">Finding · language</span><span class="cap__pill cap__pill--issue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg>Issue</span>
+        <h3>I switched back to English. It kept speaking French.</h3>
+        <p>Earlier in the chat I'd been ordering in French. When I switched back to English it didn't
+          switch with me. Every reply after that stayed French: the conversation, the order summary,
+          and the confirmation ("Résumé de commande", "À livrer au"). It seems to lock onto the first
+          language you settle into and never re-checks for a switch back. The agent can clearly run in
+          English (the pickup-time finding shows it), so this is the session sticking, not an
+          inability.</p>
       </div>
     </div>
 
@@ -120,10 +125,10 @@
   <div class="wrap">
     <div class="callout reveal">
       <span class="spark"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c.7 6.6 4.4 10.3 12 12-7.6 1.7-11.3 5.4-12 12-.7-6.6-4.4-10.3-12-12C7.6 10.3 11.3 6.6 12 0Z"/></svg></span>
-      <p><b>The agent agreed with me.</b> Unprompted, when I asked how its UI could be better, it
-        said it needs a "clearer pricing breakdown" and "fewer taps to complete actions." That's the
-        product itself naming the same two things I found: the unclear summary, and the number of
-        steps to check out.</p>
+      <p><b>The agent agreed with me.</b> When I asked the bot how its own interface could be better,
+        it said it needs a "clearer pricing breakdown" and "fewer taps to complete actions." Those are
+        the same two problems I'd already written down: a summary that's hard to read, and a checkout
+        that takes too many steps.</p>
     </div>
   </div>
 </section>
@@ -132,81 +137,64 @@
 <section class="section s-light" id="insights">
   <div class="wrap">
     <span class="eyebrow">Notes from the teardown</span>
-    <h2 class="h-sec">Six things I'd flag</h2>
-    <p class="sub-sec">The channel, the unit economics, and the write path. Click any one.</p>
+    <h2 class="h-sec">Four things worth diving into</h2>
+    <p class="sub-sec">The product risks I'd dig into, with what I'd do about each. Click any one.</p>
 
     <div class="feat">
       <div class="feat__list" id="featList">
-        <button class="feat__item on" data-i="0"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>WhatsApp's 24-hour window taxes loyalty</button>
-        <button class="feat__item" data-i="1"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 7l-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg></span>Per-order pricing rewards frequency, not bigger carts</button>
-        <button class="feat__item" data-i="2"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg></span>The POS moat is the write path, not the read</button>
-        <button class="feat__item" data-i="3"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>You're competing with muscle memory</button>
-        <button class="feat__item" data-i="4"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Prices and rules should never be the model's call</button>
-        <button class="feat__item" data-i="5"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Voice and pay-in-chat are where customers drop off</button>
+        <button class="feat__item on" data-i="0"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg></span>Writing orders into the POS is the hard part</button>
+        <button class="feat__item" data-i="1"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>Chat ordering has to be faster than the apps</button>
+        <button class="feat__item" data-i="2"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Don't leave prices or rules to the model</button>
+        <button class="feat__item" data-i="3"><span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Paying in chat is where people drop off</button>
       </div>
 
       <div class="feat__card">
         <span class="feat__spark spark"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 1c.6 6 4 9.4 11 11-7 1.6-10.4 5-11 11-.6-6-4-9.4-11-11C8 10.4 11.4 7 12 1Z"/></svg></span>
         <div class="feat__panel on" data-i="0">
-          <span class="eyebrow">Platform constraint</span>
-          <h3>WhatsApp's 24-hour window taxes loyalty</h3>
-          <p>WhatsApp only lets you message a customer for free within 24 hours of their last
-            message. After that, each message costs money (a pre-approved template). So anything that
-            means re-contacting people later, loyalty offers or even "your order is ready," has a
-            price tag on it.</p>
-          <div class="so"><b>So:</b> the cost of re-contacting customers has to shape the design from
-            day one, not get added later. It also compounds with how Châtaigne charges per order.</div>
+          <span class="eyebrow">Architecture moat</span>
+          <h3>Writing orders into the POS is the hard part</h3>
+          <p>Pulling a menu out of a POS is the easy direction. The hard one is pushing a correct order
+            back into 40-plus different POS systems, with every option and add-on mapped to each one's
+            format, plus a safeguard so a network retry doesn't place the same order twice. That's where
+            orders quietly fail and the restaurant ends up taking the blame. The bot runs pricing,
+            discounts, and payment through a backend it calls "Nexus."</p>
+          <div class="so"><b>So:</b> the number I'd watch is how often the order actually lands in each
+            POS. Make the writes safe to retry, hold the failed ones in a queue instead of dropping
+            them, and raise an alert before the restaurant has to phone in.</div>
         </div>
         <div class="feat__panel" data-i="1">
-          <span class="eyebrow">Unit economics</span>
-          <h3>Per-order pricing rewards frequency, not bigger carts</h3>
-          <p>Châtaigne charges a flat fee per order, not a percentage. So a €50 order earns the same
-            as a €15 one, and getting people to add more to their cart doesn't move the revenue.</p>
-          <div class="so"><b>So:</b> the only ways to grow are more orders per customer and cheaper
-            sign-ups. Repeat orders are where the money is, which runs straight back into the 24-hour
-            messaging window.</div>
+          <span class="eyebrow">Speed</span>
+          <h3>Chat ordering has to be faster than the apps</h3>
+          <p>The pitch is "no app to download." That only wins against the delivery apps if ordering in
+            chat is actually faster than them. When I ordered, it asked me for the sauce, then the drink,
+            then the side, each one as its own separate message. The agent itself said it needs "fewer
+            taps."</p>
+          <div class="so"><b>So:</b> keep an eye on how many steps it takes to reach checkout. My
+            redesign gets the same order down from six turns to three.</div>
         </div>
         <div class="feat__panel" data-i="2">
-          <span class="eyebrow">Architecture moat</span>
-          <h3>The POS moat is the write path, not the read</h3>
-          <p>Reading a menu out of a POS is easy. Writing a correct order back into 40+ different POS
-            systems, with every option and add-on mapped to each one's format, and a safeguard so a
-            network retry doesn't place the order twice, is the hard part. That's where orders quietly
-            fail and the restaurant takes the blame. The bot runs pricing, discounts, and payment
-            through a backend it calls "Nexus."</p>
-          <div class="so"><b>So:</b> the number that matters is how often the order actually reaches
-            each POS. Make the writes safe to retry, hold failed ones in a queue instead of dropping
-            them, and alert before the restaurant has to call in.</div>
+          <span class="eyebrow">Reliability</span>
+          <h3>Don't let the model add up the bill</h3>
+          <p>AI models are good at conversation but unreliable at arithmetic. Ask one to total an order
+            and it gets it wrong often enough to matter. So the model should never be the thing that
+            sets a price or adds up a bill. Let it handle the talking, and keep the cart and the math in
+            plain code. Then even if the model says a wrong number out loud, the real charge comes from
+            the code and nobody gets overcharged. The live bot already works this way, it told me "I
+            can't override prices or apply discounts."</p>
+          <div class="so"><b>So:</b> the model handles the words, the code handles the money. The eval
+            harness re-checks that's still true after every prompt change, so it can't quietly slip,
+            especially once features like discounts or loyalty points get added later.</div>
         </div>
         <div class="feat__panel" data-i="3">
-          <span class="eyebrow">Speed</span>
-          <h3>You're competing with muscle memory</h3>
-          <p>Châtaigne's pitch is "no app to download." But that only beats the delivery apps if
-            ordering in chat is genuinely faster. In my live order it asked for the sauce, then the
-            drink, then the side, each as its own back-and-forth. The agent itself said it needs
-            "fewer taps."</p>
-          <div class="so"><b>So:</b> track the typical number of steps to checkout. The redesign cuts
-            it from 6 to 3.</div>
-        </div>
-        <div class="feat__panel" data-i="4">
-          <span class="eyebrow">Reliability</span>
-          <h3>Prices and rules should never be the model's call</h3>
-          <p>Made-up items, wrong totals, and broken rules are all avoidable. Let the model do the
-            talking, but have the code own the cart and add up every total, so a model that quotes a
-            wrong price gets caught before the customer is charged. The live bot already works this
-            way: "I can't override prices or apply discounts," "I can't confirm payment unless Nexus
-            tells me it went through."</p>
-          <div class="so"><b>So:</b> the model handles language, the code handles money. The harness
-            tests that line still holds on every prompt change.</div>
-        </div>
-        <div class="feat__panel" data-i="5">
           <span class="eyebrow">Hidden risk</span>
-          <h3>Voice and pay-in-chat are where customers drop off</h3>
-          <p>Voice notes break on noisy, accented, or mixed-language speech. And paying inside a chat,
-            instead of a familiar checkout page, makes first-time users hesitate.</p>
-          <div class="so"><b>So:</b> before changing anything earlier in the flow, first measure how
-            many people quit at the payment step. That's probably the biggest leak, and you can't fix
-            what you don't measure.</div>
+          <h3>Paying inside the chat is where first-timers hesitate</h3>
+          <p>Paying inside a chat window, instead of the normal checkout page people are used to, is
+            exactly the kind of thing that makes a first-time customer pause. And it's invisible: nobody
+            abandons loudly, they just stop replying at the payment step, so you'd never catch it
+            without tracking.</p>
+          <div class="so"><b>So:</b> before touching anything earlier in the flow, instrument the
+            payment step and see how many people drop there. I'd bet it's the biggest leak, and right
+            now nobody knows the number.</div>
         </div>
       </div>
     </div>
@@ -218,33 +206,34 @@
   <div class="wrap">
     <span class="eyebrow">The 30-second scorecard</span>
     <h2 class="h-sec" style="color:#fff">What I tested, and how it held</h2>
-    <p class="sub-sec">The live Poulet Braisé demo, 9 June 2026. The dangerous failures all held up.
-      What's left to fix is in clarity, data, and flow.</p>
+    <p class="sub-sec">All on the live Poulet Braisé demo, 9 June 2026. The failures that would actually
+      hurt someone held up fine. What's left to fix is mostly about clarity, data, and the flow.</p>
     <div class="legend">
-      <b><span class="dot dot--red"></span> Risk if it fails: high</b>
-      <b><span class="dot dot--amber"></span> medium</b>
-      <b><span class="dot dot--green"></span> low</b>
+      <span class="legend__lbl">Risk if it fails</span>
+      <b><span class="dot dot--red"></span> High</b>
+      <b><span class="dot dot--amber"></span> Medium</b>
+      <b><span class="dot dot--green"></span> Low</b>
     </div>
     <div class="scard reveal">
       <table>
-        <thead><tr><th>Dimension</th><th>Risk if it fails</th><th>Live result</th></tr></thead>
+        <thead><tr><th>What I checked</th><th>Risk if it fails</th><th>Live result</th></tr></thead>
         <tbody>
-          <tr><td>Menu hallucination</td><td><span class="sev"><span class="dot dot--red"></span>High</span></td><td><span class="res res--ok">Held ×3</span></td></tr>
-          <tr><td>Price / math accuracy</td><td><span class="sev"><span class="dot dot--red"></span>High</span></td><td><span class="res res--ok">Correct</span></td></tr>
-          <tr><td>Allergen / liability</td><td><span class="sev"><span class="dot dot--red"></span>High</span></td><td><span class="res res--ok">Safe pattern</span></td></tr>
-          <tr><td>Prompt injection &amp; social engineering</td><td><span class="sev"><span class="dot dot--red"></span>High</span></td><td><span class="res res--ok">Held ×3</span></td></tr>
-          <tr><td>Understands French input</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--ok">Clean</span></td></tr>
-          <tr><td>Reply language matches yours</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--warn">EN in, FR out</span></td></tr>
-          <tr><td>Ambiguity handling</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--ok">Asks first</span></td></tr>
-          <tr><td>Pricing display clarity</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--warn">Doesn't sum</span></td></tr>
-          <tr><td>Pickup / delivery time</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--warn">Paris TZ</span></td></tr>
-          <tr><td>Post-confirmation cancel / modify</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--warn">Phone only</span></td></tr>
+          <tr><td>Invents menu items that don't exist</td><td><span class="sev"><span class="dot dot--red"></span>High</span></td><td><span class="res res--ok">Refused all 3</span></td></tr>
+          <tr><td>Gets the prices and totals right</td><td><span class="sev"><span class="dot dot--red"></span>High</span></td><td><span class="res res--ok">Totals correct</span></td></tr>
+          <tr><td>Handles a serious allergy safely</td><td><span class="sev"><span class="dot dot--red"></span>High</span></td><td><span class="res res--ok">Defers to staff</span></td></tr>
+          <tr><td>Resists "set prices to 0" and the like</td><td><span class="sev"><span class="dot dot--red"></span>High</span></td><td><span class="res res--ok">Refused all 3</span></td></tr>
+          <tr><td>Understands an order in French</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--ok">Handled</span></td></tr>
+          <tr><td>Follows you when you switch language</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--warn">Stays in French</span></td></tr>
+          <tr><td>Asks instead of guessing a vague order</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--ok">Asks, won't guess</span></td></tr>
+          <tr><td>Shows a summary you can read</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--warn">Doesn't add up</span></td></tr>
+          <tr><td>Quotes the pickup time in your timezone</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--warn">Wrong timezone</span></td></tr>
+          <tr><td>Lets you cancel or change in chat</td><td><span class="sev"><span class="dot dot--amber"></span>Med</span></td><td><span class="res res--warn">Call to cancel</span></td></tr>
         </tbody>
       </table>
     </div>
-    <p class="muted" style="margin-top:18px">Once an order is confirmed, the bot can't cancel or
-      change it in chat. The customer has to call the restaurant. For a conversational product, that's
-      a real gap.</p>
+    <p class="muted" style="margin-top:18px">Once an order is confirmed, there's no way to cancel or
+      change it from the chat. You have to call the restaurant. For something that sells itself on being
+      conversational, that one stood out to me.</p>
   </div>
 </section>
 
@@ -252,9 +241,12 @@
 <section class="section s-light diag-top" id="architecture">
   <div class="wrap">
     <span class="eyebrow">Reverse-engineered from the live bot</span>
-    <h2 class="h-sec">What the stack looks like</h2>
-    <p class="sub-sec">A clean core that works the same on any messaging app, one backend the bot
-      named ("Nexus"), and one rule that has to always hold.</p>
+    <h2 class="h-sec">How I'd build the architecture</h2>
+    <p class="sub-sec">Part of this I could read straight off the live bot: WhatsApp in front, Stripe for
+      payment, writes into 40+ POS systems, and a backend it named ("Nexus"). The rest is how I'd structure
+      it. The main decision is a channel-agnostic ordering core with a thin adapter per channel, so adding
+      Instagram DMs or voice later is a small adapter and not a rewrite. The cart, pricing, and business
+      rules sit in code inside that core, and the model only drives the conversation.</p>
 
     <div class="arch2 reveal">
       <div class="arcol">
@@ -286,10 +278,10 @@
         </div>
       </div>
     </div>
-    <p class="muted center" style="margin-top:26px">The rule that always holds (an invariant): pricing,
-      which items exist, and the business rules all live in the core, in code. Never copied per channel,
-      never left to the model. The live bot shows they already do this ("pricing is set by the
-      restaurant system").</p>
+    <p class="muted center" style="margin-top:26px">The one rule it can never break: pricing, which
+      items exist, and the business rules all live in the core, in code. They shouldn't be rebuilt for
+      each new channel, and they shouldn't be left to the model to decide. The live bot already works
+      this way ("pricing is set by the restaurant system").</p>
   </div>
 </section>
 
@@ -300,11 +292,11 @@
   <div class="wrap">
     <span class="eyebrow">Current vs redesigned</span>
     <h2 class="h-sec" style="color:#fff">The same order, fewer steps</h2>
-    <p class="sub-sec">Modeled on the real order I placed live. "Current" is the actual back-and-forth,
-      where sauce, side and drink each came as a separate question and the summary doesn't add up.
-      "Redesigned" keeps the same WhatsApp building blocks (the quick-reply pills they already use) but
-      batches those questions, shows a cart card whose lines sum to the total, and ends in a one-tap
-      checkout with a real ready-by time.</p>
+    <p class="sub-sec">Both flows are the real order I placed. "Current" is the actual back-and-forth I
+      had, where the sauce, side and drink each came as a separate question and the summary doesn't add
+      up. "Redesigned" uses the same WhatsApp pieces they already have (those quick-reply pills), but it
+      groups the questions together, shows a cart whose lines actually sum to the total, and finishes
+      with a one-tap checkout and a ready-by time that's in your own timezone.</p>
 
     <div class="redesign">
       <div>
@@ -332,9 +324,9 @@
 
     <div class="ideas reveal">
       <div class="ideas__lead">
-        <h3>The fuller backlog</h3>
-        <p>Asked how its own UI could be better, the agent named clearer pricing and fewer taps. Taking
-          that further, here's what I'd queue up next. The two it raised itself are tagged.</p>
+        <h3>Other things I'd improve</h3>
+        <p>When I asked the agent how its own UI could improve, it named clearer pricing and fewer taps.
+          Building on that, here's the rest of what I'd line up. The two it raised itself are tagged.</p>
       </div>
       <div class="ideas__grid">
         <div class="idea-col">
@@ -378,13 +370,13 @@
 <!-- HARNESS -->
 <section class="section s-light diag-top" id="harness">
   <div class="wrap">
-    <span class="eyebrow">Because hand-testing doesn't scale</span>
+    <span class="eyebrow">Because clicking through it by hand doesn't scale</span>
     <h2 class="h-sec">I built an eval stack. Clone it and run it.</h2>
-    <p class="sub-sec">A faithful rebuild of the agent (Anthropic SDK, structured tool calls, with the
-      cart and totals owned by code) plus 19 scored test cases covering the failure types I mapped.
-      Two ways to score: code checks the order and totals exactly, and a second model judges the
-      softer stuff (staying on-menu, refusing injection, language). Pass a <code>--threshold</code>
-      and it blocks a prompt change in CI if the score drops.</p>
+    <p class="sub-sec">It's a rebuild of the agent (Anthropic SDK, structured tool calls, with the cart
+      and totals kept in code) and 19 scored test cases that cover the failure types I mapped out. It
+      scores two ways: the code checks the order and the totals exactly, and a second model judges the
+      fuzzier things like staying on-menu, refusing injection, and replying in the right language. Give
+      it a <code>--threshold</code> and it'll fail a prompt change in CI when the score slips.</p>
     <div class="harness-cta">
       <a class="btn btn--green" href="https://github.com/Parsa1ll/chataigne" target="_blank" rel="noopener">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1a11 11 0 0 0-3.5 21.4c.6.1.8-.2.8-.5v-2c-3 .6-3.7-1.3-3.7-1.3-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.6 1.1 1.6 1.1 1 1.7 2.6 1.2 3.2.9.1-.7.4-1.2.7-1.5-2.4-.3-5-1.2-5-5.3 0-1.2.4-2.1 1.1-2.9-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 3 1.1a10.4 10.4 0 0 1 5.5 0c2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.6.1 2.9.7.8 1.1 1.7 1.1 2.9 0 4.1-2.6 5-5 5.3.4.3.8 1 .8 2.1v3.1c0 .3.2.6.8.5A11 11 0 0 0 12 1Z"/></svg>
@@ -412,10 +404,10 @@ $ python run_evals.py --threshold 0.9   <span class="c-c"># exits non-zero -> CI
       </div>
       <div class="hcard reveal">
         <ul>
-          <li><b>Two ways to score.</b> The order and totals are checked exactly in code. The softer stuff (staying on-menu, refusing injection, language) is judged by a second model.</li>
-          <li><b>Code owns the truth.</b> The cart and every total are worked out in code, so if the model quotes a wrong price it gets caught and the cart still stays right.</li>
-          <li><b>Built from the real test.</b> Two cases reproduce the live orders I placed (€11.50 and €28.00) exactly.</li>
-          <li><b>Ready for production.</b> Point the same test set at the real agent. The cases don't change.</li>
+          <li><b>Two ways to score.</b> Code checks the order and the totals exactly. A second model judges the fuzzier things, like staying on-menu, refusing injection, and language.</li>
+          <li><b>Code owns the truth.</b> The cart and every total are computed in code, so if the model quotes a wrong price the check catches it and the cart stays correct anyway.</li>
+          <li><b>Built from the real test.</b> Two of the cases replay the live orders I placed (€11.50 and €28.00), down to the totals.</li>
+          <li><b>Ready for production.</b> Point the same test set at the real agent and the cases carry over unchanged.</li>
         </ul>
         <p class="muted">Full repo: <code>/eval-harness</code> · <code>/redteam</code> · <code>/review</code></p>
       </div>
@@ -427,13 +419,13 @@ $ python run_evals.py --threshold 0.9   <span class="c-c"># exits non-zero -> CI
 <section class="section s-cream2 diag-top" id="plan">
   <div class="wrap">
     <span class="eyebrow">If I joined tomorrow</span>
-    <h2 class="h-sec">Five things, in order</h2>
+    <h2 class="h-sec">What I'd work on first</h2>
     <ol class="plan">
       <li><span class="n">01</span><div><b>Make the harness a CI gate.</b> Run the test set on every prompt or model change, block the merge if the score drops, and run the same tests against real traffic in the background so problems show up before customers do.</div></li>
       <li><span class="n">02</span><div><b>Harden the POS write path.</b> Idempotency keys so a retry never creates a second order, a holding queue for writes that fail instead of silently dropping them, and a success rate tracked per POS with alerts, so we catch a broken one before the restaurant phones in.</div></li>
       <li><span class="n">03</span><div><b>Fix the live findings at the source.</b> Have the code, not the model, print each line's total; render the ready-by time in the customer's timezone instead of the restaurant's Paris time; and store allergens in a proper per-item table instead of only ever saying "call the restaurant".</div></li>
       <li><span class="n">04</span><div><b>Build the channel layer now.</b> Put the ordering core behind one interface so <b>SMS, Instagram DM, and voice</b> are small add-ons, not rewrites. It also cuts the risk of depending on WhatsApp alone, and the 24-hour-window cost, in one move.</div></li>
-      <li><span class="n">05</span><div><b>Add tracking and grow the test set.</b> Measure the typical number of steps to checkout and where people quit at the payment step, then turn real failures into new test cases every week so coverage stays ahead of the bug list.</div></li>
+      <li><span class="n">05</span><div><b>Add tracking and grow the test set.</b> Measure how many steps checkout actually takes and where people quit at the payment step, and feed real failures back in as new test cases every week, so the suite keeps growing from real problems instead of guesses.</div></li>
     </ol>
   </div>
 </section>
