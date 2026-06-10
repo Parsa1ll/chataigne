@@ -1,0 +1,194 @@
+{
+  "_note": "Menu reconstructed from the live Châtaigne/PayParrot demo bot (restaurant: Poulet Braisé), tested 2026-06-09. Prices marked price_source:observed were seen in real order summaries; price_source:estimated are plausible fillers for items whose price wasn't captured. Allergen data is structured per item, the live bot admitted it lacks this, which is finding #3 in the red-team.",
+  "restaurant": {
+    "name": "Poulet Braisé",
+    "currency": "EUR",
+    "hours": "11:00-23:00 daily",
+    "fulfillment": ["pickup", "delivery"],
+    "delivery_radius_km": 4,
+    "delivery_fee": 2.5,
+    "min_order_delivery": 15.0
+  },
+  "sauces": ["Sauce PB Verte l'Originale", "Sauce PB Verte Spicy", "Sauce BBQ", "Sans sauce"],
+  "items": [
+    {
+      "id": "demi_poulet",
+      "name": "1/2 PB Poulet Braisé Solo",
+      "price": 6.5,
+      "price_source": "observed",
+      "category": "chicken",
+      "contains_allergens": [],
+      "vegan": false,
+      "spice": "mild",
+      "modifiers": {
+        "sauce_choice": true,
+        "extras": [{"name": "sauce supplémentaire", "price": 0.8}]
+      }
+    },
+    {
+      "id": "wings5",
+      "name": "5 Wings Braisées",
+      "price": 8.5,
+      "price_source": "observed",
+      "category": "chicken",
+      "contains_allergens": [],
+      "vegan": false,
+      "spice": "medium",
+      "modifiers": {
+        "sauce_choice": true,
+        "extras": [{"name": "sauce supplémentaire", "price": 0.8}]
+      }
+    },
+    {
+      "id": "tenders",
+      "name": "Tenders",
+      "price": 7.5,
+      "price_source": "estimated",
+      "category": "chicken",
+      "contains_allergens": ["gluten"],
+      "vegan": false,
+      "spice": "mild",
+      "modifiers": {"sauce_choice": true}
+    },
+    {
+      "id": "crispy_burger",
+      "name": "Crispy Burger",
+      "price": 9.0,
+      "price_source": "estimated",
+      "category": "burgers",
+      "contains_allergens": ["gluten"],
+      "vegan": false,
+      "spice": "mild"
+    },
+    {
+      "id": "smash_burger",
+      "name": "Smash Burger",
+      "price": 9.5,
+      "price_source": "estimated",
+      "category": "burgers",
+      "contains_allergens": ["gluten", "dairy"],
+      "vegan": false,
+      "spice": "mild"
+    },
+    {
+      "id": "pb_roll",
+      "name": "PB Roll (wrap)",
+      "price": 8.5,
+      "price_source": "estimated",
+      "category": "wraps",
+      "contains_allergens": ["gluten"],
+      "vegan": false,
+      "spice": "mild"
+    },
+    {
+      "id": "spicy_roll",
+      "name": "Spicy Roll (wrap)",
+      "price": 8.5,
+      "price_source": "estimated",
+      "category": "wraps",
+      "contains_allergens": ["gluten"],
+      "vegan": false,
+      "spice": "hot"
+    },
+    {
+      "id": "aloko_roll",
+      "name": "Aloko Roll (wrap)",
+      "price": 8.5,
+      "price_source": "estimated",
+      "category": "wraps",
+      "contains_allergens": ["gluten"],
+      "vegan": false,
+      "spice": "mild"
+    },
+    {
+      "id": "frites_pd",
+      "name": "Frites de patate douce",
+      "price": 5.0,
+      "price_source": "observed",
+      "category": "sides",
+      "contains_allergens": [],
+      "vegan": true,
+      "spice": "none"
+    },
+    {
+      "id": "alokos",
+      "name": "Alokos",
+      "price": 5.0,
+      "price_source": "observed",
+      "category": "sides",
+      "contains_allergens": [],
+      "vegan": true,
+      "spice": "none"
+    },
+    {
+      "id": "riz",
+      "name": "Riz",
+      "price": 3.5,
+      "price_source": "estimated",
+      "category": "sides",
+      "contains_allergens": [],
+      "vegan": true,
+      "spice": "none"
+    },
+    {
+      "id": "haricots_verts",
+      "name": "Haricots verts",
+      "price": 4.0,
+      "price_source": "estimated",
+      "category": "sides",
+      "contains_allergens": [],
+      "vegan": true,
+      "spice": "none"
+    },
+    {
+      "id": "salade_thai",
+      "name": "Salade Thaï",
+      "price": 8.0,
+      "price_source": "estimated",
+      "category": "salads",
+      "contains_allergens": ["peanut"],
+      "vegan": false,
+      "spice": "mild"
+    },
+    {
+      "id": "coca",
+      "name": "Coca-Cola Original",
+      "price": 3.0,
+      "price_source": "observed",
+      "category": "drinks",
+      "contains_allergens": [],
+      "vegan": true,
+      "spice": "none"
+    },
+    {
+      "id": "bissap",
+      "name": "Bissap (hibiscus)",
+      "price": 3.5,
+      "price_source": "estimated",
+      "category": "drinks",
+      "contains_allergens": [],
+      "vegan": true,
+      "spice": "none"
+    },
+    {
+      "id": "vittel",
+      "name": "Vittel (water)",
+      "price": 2.5,
+      "price_source": "estimated",
+      "category": "drinks",
+      "contains_allergens": [],
+      "vegan": true,
+      "spice": "none"
+    },
+    {
+      "id": "milkshake",
+      "name": "Milkshake",
+      "price": 5.5,
+      "price_source": "estimated",
+      "category": "desserts",
+      "contains_allergens": ["dairy", "peanut"],
+      "vegan": false,
+      "spice": "none"
+    }
+  ]
+}
